@@ -13,22 +13,25 @@ import Login from './components/Login/Login'
 class App extends PureComponent {
 
   state = {
-    userList: {},
+    data: [],
     currentPage: 1,
+    totalPage: 0,
     loading: false,
     auth: false,
   }
 
   componentDidMount = () => {
-    const {currentPage} = this.state
-    this.loadPage(`https://reqres.in/api/users?page=${currentPage}`);
+    let {currentPage} = this.state
+    this.loadPage(`https://reqres.in/api/users?page=${currentPage}`, currentPage);
   }
 
-  // componentDidUpdate = (prevProps, prevState) => {
-  //   if (this.state.auth !== prevState.auth ) {
-  //     this.loadPage(`https://reqres.in/api/users?page=${currentPage}`);
-  //   }
-  // }
+  componentDidUpdate = (prevProps, prevState) => {
+    const {currentPage} = this.state
+    // Популярный пример (не забудьте сравнить пропсы):
+    if (this.state.currentPage !== prevState.currentPage) {
+      this.loadPage(`https://reqres.in/api/users?page=${currentPage}`);
+    }
+  }
 
   setAuth = () => {
     const {auth} = this.state
@@ -37,20 +40,31 @@ class App extends PureComponent {
     })
   }
 
+  setCurrentPage = (page) => {
+    this.setState({
+      currentPage: page
+    })
+  }
+
   loadPage = async (url) => {
     try {
       this.setState({
         loading: true
       })
+
       let response = await fetch(url);
       let userList = await response.json();
-      this.setState({
-        userList: userList,
-        loading: false
-      })
+
+      this.setState(prevState =>{
+        return{
+            data: prevState.data.concat(userList.data),
+            totalPage: userList.total_pages,
+            loading: false,
+        }
+     })
     }
     catch(e) {
-      alert("Превышен лимит запросов, обновите через минуту")
+      alert("Возникла ошибка")
       this.setState({
         loading: false
       })
@@ -59,7 +73,7 @@ class App extends PureComponent {
   
 
   render() {
-    const { userList, currentPage, loading, auth } = this.state;
+    const { data, currentPage, loading, auth, totalPage } = this.state;
 
     return (
 
@@ -76,7 +90,13 @@ class App extends PureComponent {
             :
               <Fragment>
                 <Route exact path="/">
-                  <Userlist userList={userList} />
+                  <Userlist 
+                    userList={data} 
+                    currentPage={currentPage} 
+                    setCurrentPage={this.setCurrentPage} 
+                    loading={loading} 
+                    totalPage={totalPage} 
+                  />
                 </Route>
                 <Route 
                   exact
