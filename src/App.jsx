@@ -8,6 +8,7 @@ import Footer from './components/Footer/Footer'
 import Userlist from './components/UserList/UserList'
 import User from './components/User/User'
 import Loading from './components/Loading/Loading'
+import Login from './components/Login/Login'
 
 class App extends PureComponent {
 
@@ -23,10 +24,17 @@ class App extends PureComponent {
     this.loadPage(`https://reqres.in/api/users?page=${currentPage}`);
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
-    if (this.state.auth !== prevState.auth ) {
-      this.loadPage(`https://reqres.in/api/users?page=${currentPage}`);
-    }
+  // componentDidUpdate = (prevProps, prevState) => {
+  //   if (this.state.auth !== prevState.auth ) {
+  //     this.loadPage(`https://reqres.in/api/users?page=${currentPage}`);
+  //   }
+  // }
+
+  setAuth = () => {
+    const {auth} = this.state
+    this.setState({
+      auth: !auth
+    })
   }
 
   loadPage = async (url) => {
@@ -57,14 +65,14 @@ class App extends PureComponent {
 
       <BrowserRouter>
         <div className="app">
-          <Header />
+          <Header auth={auth} setAuth={this.setAuth}/>
           <div className="container">
             {loading &&
               <Loading />
             }
 
-            {auth ? 
-              <Login /> 
+            {!auth ? 
+              <Login setAuth={this.setAuth} auth={auth}/> 
             :
               <Fragment>
                 <Route exact path="/">
