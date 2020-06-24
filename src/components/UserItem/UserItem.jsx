@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 import './UserItem.sass'
 
-const UserItem = ({ id, email, first_name, last_name, avatar }) => {
-
+const UserItem = ({ id, email, first_name, last_name, avatar, deleteUser, editUser }) => {
+  const fullName = `${first_name} ${last_name}`
   return (
     <div className="user-list__item item">
       <div className="item__avatar">
@@ -17,6 +17,8 @@ const UserItem = ({ id, email, first_name, last_name, avatar }) => {
           <Link className="item__link" to={`/user/${id}`}>{first_name} {last_name}</Link>
         </div>
         <div className="email">{email}</div>
+        <button className="btn" onClick={() => editUser(id, fullName)}>Изменить</button>
+        <button className="btn" onClick={() => deleteUser(id)} >Удалить</button>
       </div>
       
     </div>

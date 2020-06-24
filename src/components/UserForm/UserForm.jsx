@@ -36,7 +36,8 @@ class UserForm extends Component {
       body: JSON.stringify({name, job})
     })
     const user = await addUser.json()
-    alert(`user added ${user.name} ${user.Componentjob}`)
+
+    alert(`Пользователь добавлен ${user.name} ${user.job}`)
     
     this.setState({
       name: '',
@@ -44,19 +45,10 @@ class UserForm extends Component {
     })
   }
 
-  editUser = () => {
-
-  }
-
-  deleteUser = () => {
-    
-  }
-
   render () {
 
     return (
       <Fragment>
-        <div className="title"></div>
         <form className="user-form" onSubmit={this.handleInputSubmit}>
           <label>Name
           <input type="text" name="name" value={this.state.name} onChange={this.handleInputChange} className="user-form__input"/>
@@ -64,7 +56,7 @@ class UserForm extends Component {
           <label>Job
           <input type="text" name="job" value={this.state.job} onChange={this.handleInputChange} className="user-form__input"/>
           </label>
-          <button className="user-form__btn">Добавить</button>
+          <button className="btn">Добавить</button>
         </form>
       </Fragment>
     );

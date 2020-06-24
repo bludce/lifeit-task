@@ -26,7 +26,7 @@ class List extends React.Component {
   }
  
   render() {
-
+    const {deleteUser, editUser} = this.props
     const userItems = Array.from(this.props.userList).map(({ id, email, first_name, last_name, avatar }) => {
       return (
         <UserItem
@@ -36,6 +36,8 @@ class List extends React.Component {
           first_name={first_name}
           last_name={last_name}
           avatar={avatar}
+          deleteUser={deleteUser}
+          editUser={editUser}
         />
       )
     });

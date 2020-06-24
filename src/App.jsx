@@ -10,6 +10,7 @@ import User from './components/User/User'
 import Loading from './components/Loading/Loading'
 import Login from './components/Login/Login'
 import UserForm from './components/UserForm/UserForm'
+import EditUserForm from './components/EditUserForm/EditUserForm'
 
 class App extends PureComponent {
 
@@ -19,6 +20,12 @@ class App extends PureComponent {
     totalPage: 0,
     loading: false,
     auth: false,
+    isEditing: false,
+    user: {
+      id: 0,
+      name: '',
+      job: ''
+    }
   }
 
   componentDidMount = () => {
@@ -28,7 +35,7 @@ class App extends PureComponent {
 
   componentDidUpdate = (prevProps, prevState) => {
     const {currentPage} = this.state
-    // Популярный пример (не забудьте сравнить пропсы):
+
     if (this.state.currentPage !== prevState.currentPage) {
       this.loadPage(`https://reqres.in/api/users?page=${currentPage}`);
     }
@@ -57,10 +64,10 @@ class App extends PureComponent {
       let userList = await response.json();
 
       this.setState(prevState =>{
-        return{
-            data: prevState.data.concat(userList.data),
-            totalPage: userList.total_pages,
-            loading: false,
+        return {
+          data: prevState.data.concat(userList.data),
+          totalPage: userList.total_pages,
+          loading: false,
         }
      })
     }
@@ -71,10 +78,42 @@ class App extends PureComponent {
       })
     }
   }
-  
+
+  deleteUser = async(id) => {
+    try {
+      const deleteUser = await fetch(`https://reqres.in/api/users/${id}`, {
+        method: 'DELETE',
+      })
+
+      if (deleteUser.status === 204) {
+        alert('Пользователь успешно удален')
+      }
+      
+    } catch (error) {
+      alert(error)
+    }
+  }
+
+  editUser = (id, fullName) => {
+    this.setState({
+      isEditing: true,
+      user: {
+        id: id,
+        name: fullName,
+        job: ''
+      }
+    })
+  }
+
+  setIsEditing = () => {
+    const {isEditing} = this.state
+    this.setState({
+      isEditing: !isEditing
+    })
+  }
 
   render() {
-    const { data, currentPage, loading, auth, totalPage } = this.state;
+    const { data, currentPage, loading, auth, totalPage, isEditing, user, } = this.state;
 
     return (
 
@@ -86,7 +125,7 @@ class App extends PureComponent {
               <Loading />
             }
 
-            {auth ? 
+            {!auth ? 
               <Login setAuth={this.setAuth} auth={auth}/> 
             :
               <Fragment>
@@ -98,8 +137,18 @@ class App extends PureComponent {
                       setCurrentPage={this.setCurrentPage} 
                       loading={loading} 
                       totalPage={totalPage} 
+                      deleteUser={this.deleteUser}
+                      editUser={this.editUser}
                     />
-                    <UserForm />
+                     {isEditing ? (
+                        <EditUserForm
+                          isEditing={isEditing}
+                          user={user}
+                          setIsEditing={this.setIsEditing}
+                        />
+                      ) : (
+                        <UserForm />
+                      )}
                   </div>
                   
                 </Route>
