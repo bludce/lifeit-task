@@ -9,6 +9,7 @@ import Userlist from './components/UserList/UserList'
 import User from './components/User/User'
 import Loading from './components/Loading/Loading'
 import Login from './components/Login/Login'
+import UserForm from './components/UserForm/UserForm'
 
 class App extends PureComponent {
 
@@ -85,18 +86,22 @@ class App extends PureComponent {
               <Loading />
             }
 
-            {!auth ? 
+            {auth ? 
               <Login setAuth={this.setAuth} auth={auth}/> 
             :
               <Fragment>
                 <Route exact path="/">
-                  <Userlist 
-                    userList={data} 
-                    currentPage={currentPage} 
-                    setCurrentPage={this.setCurrentPage} 
-                    loading={loading} 
-                    totalPage={totalPage} 
-                  />
+                  <div className="content">
+                    <Userlist 
+                      userList={data} 
+                      currentPage={currentPage} 
+                      setCurrentPage={this.setCurrentPage} 
+                      loading={loading} 
+                      totalPage={totalPage} 
+                    />
+                    <UserForm />
+                  </div>
+                  
                 </Route>
                 <Route 
                   exact
