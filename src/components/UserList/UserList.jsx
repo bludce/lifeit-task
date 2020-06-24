@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import './UserList.sass'
 
 import UserItem from '../UserItem/UserItem'
@@ -26,8 +28,8 @@ class List extends React.Component {
   }
  
   render() {
-    const {deleteUser, editUser} = this.props
-    const userItems = Array.from(this.props.userList).map(({ id, email, first_name, last_name, avatar }) => {
+    const {deleteUser, editUser, userList} = this.props
+    const userItems = userList.map(({ id, email, first_name, last_name, avatar }) => {
       return (
         <UserItem
           key={id}
@@ -46,6 +48,24 @@ class List extends React.Component {
       <div className="user-list">{userItems}</div>
     );
   };
+}
+
+List.propTypes = {
+  currentPage: PropTypes.number,
+  deleteUser: PropTypes.func,
+  editUser: PropTypes.func,
+  totalPage: PropTypes.number,
+  userList: PropTypes.array, 
+  setCurrentPage: PropTypes.func,
+}
+
+List.defaultProps = {
+  currentPage: 0,
+  deleteUser: () => {},
+  editUser: () => {},
+  totalPage: 0,
+  userList: [], 
+  setCurrentPage: () => {},
 }
 
 export default List;

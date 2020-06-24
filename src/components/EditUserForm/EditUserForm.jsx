@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 class EditUserForm extends Component {
 
@@ -68,6 +69,18 @@ class EditUserForm extends Component {
       </Fragment>
     );
   }
+}
+
+EditUserForm.propTypes = {
+  isEditing: PropTypes.bool,
+  setIsEditing: PropTypes.func,
+  user: PropTypes.obj,
+}
+
+EditUserForm.defaultProps = {
+  isEditing: false,
+  setIsEditing: () => {},
+  user: {},
 }
 
 export default EditUserForm;

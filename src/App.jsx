@@ -135,7 +135,6 @@ class App extends PureComponent {
                       userList={data} 
                       currentPage={currentPage} 
                       setCurrentPage={this.setCurrentPage} 
-                      loading={loading} 
                       totalPage={totalPage} 
                       deleteUser={this.deleteUser}
                       editUser={this.editUser}

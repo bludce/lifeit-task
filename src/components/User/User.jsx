@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './User.sass'
 
@@ -58,6 +59,14 @@ class User extends Component {
       </div>
     );
   }
+}
+
+User.propTypes = {
+  id: PropTypes.string,
+}
+
+User.defaultProps = {
+  id: '',
 }
 
 export default User;

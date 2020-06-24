@@ -31,6 +31,8 @@ UserItem.propTypes = {
   first_name: PropTypes.string,
   last_name: PropTypes.string,
   avatar: PropTypes.string,
+  deleteUser: PropTypes.func,
+  editUser: PropTypes.func,
 }
 
 UserItem.defaultProps = {
@@ -39,6 +41,8 @@ UserItem.defaultProps = {
   first_name: '',
   last_name: '',
   avatar: '',
+  deleteUser: () => {},
+  editUser: () => {},
 }
 
 export default UserItem

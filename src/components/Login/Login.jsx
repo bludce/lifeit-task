@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import './Login.sass';
 
@@ -82,6 +83,16 @@ class Login extends Component {
       </div>
     );
   }
+}
+
+Login.propTypes = {
+  auth: PropTypes.bool,
+  setAuth: PropTypes.func,
+}
+
+Login.defaultProps = {
+  auth: false,
+  setAuth: () => {},
 }
 
 export default Login;
